@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ public class MealsUtil {
     public static List<MealTo> getFilteredWithExcess(Collection<Meal> meals, int caloriesPerDay,
                                                      LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         return getFilteredWithExcess(meals, caloriesPerDay,
-                meal -> DateTimeUtil.isBetween(meal.getDate(),startDate,endDate) && DateTimeUtil.isBetween(meal.getTime(), startTime, endTime));
+                meal -> DateTimeUtil.isBetween(meal.getDate(), startDate, endDate) & DateTimeUtil.isBetween(meal.getTime(), startTime, endTime));
     }
 
     private static List<MealTo> getFilteredWithExcess(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {

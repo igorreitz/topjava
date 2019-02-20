@@ -19,6 +19,39 @@
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
+    <hr>
+
+    <form method="post" action="meals">
+        <p><select name="userId" size="3">
+            <option disabled>Выберите пользователя</option>
+            <option value="1">User 1</option>
+            <option value="2">User 2</option>
+        </select></p>
+        <p><input type="submit" value="Login"></p>
+    </form>
+
+    <form method="post" action="meals">
+        <dl>
+            <dt>Start Date:</dt>
+            <dd><input type="date" name="startDate"></dd>
+        </dl>
+        <dl>
+            <dt>End Date:</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>Start Time:</dt>
+            <dd><input type="time"  name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>End Time:</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Отфильтровать</button>
+    </form>
+</section>
+<section>
+    <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <hr/>
@@ -43,7 +76,7 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
+                <td><a href="meals?action=update&id=${meal.id}&endTime=${dateTime}">Update</a></td>
                 <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>

@@ -67,7 +67,9 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     public Collection<Meal> getAll(int userId) {
         return repository.values().stream()
                 .filter(meal -> meal.getUserId() == userId)
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .sorted(Comparator.comparing(Meal::getDate)
+                        .thenComparing(Meal::getTime)
+                        .reversed())
                 .collect(Collectors.toList());
     }
 }
