@@ -21,37 +21,27 @@
     <h3><a href="index.html">Home</a></h3>
     <hr>
 
-    <form method="post" action="meals">
-        <p><select name="userId" size="3">
-            <option disabled>Выберите пользователя</option>
-            <option value="1">User 1</option>
-            <option value="2">User 2</option>
-        </select></p>
-        <p><input type="submit" value="Login"></p>
-    </form>
-
-    <form method="post" action="meals">
+    <form method="post" action="meals?action=filter">
         <dl>
-            <dt>Start Date:</dt>
+            <dt>From Date:</dt>
             <dd><input type="date" name="startDate"></dd>
         </dl>
         <dl>
-            <dt>End Date:</dt>
+            <dt>To Date:</dt>
             <dd><input type="date" name="endDate"></dd>
         </dl>
         <dl>
-            <dt>Start Time:</dt>
-            <dd><input type="time"  name="startTime"></dd>
+            <dt>From Time:</dt>
+            <dd><input type="time" name="startTime"></dd>
         </dl>
         <dl>
-            <dt>End Time:</dt>
+            <dt>To Time:</dt>
             <dd><input type="time" name="endTime"></dd>
         </dl>
         <button type="submit">Отфильтровать</button>
     </form>
 </section>
 <section>
-    <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <hr/>
