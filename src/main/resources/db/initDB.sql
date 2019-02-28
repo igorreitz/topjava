@@ -32,7 +32,7 @@ CREATE TABLE meals
   description      VARCHAR                 NOT NULL,
   calories         INTEGER DEFAULT 1000    NOT NULL,
   user_id          INTEGER NOT NULL,
-  CONSTRAINT meals_idx UNIQUE (dateTime),
+  /*CONSTRAINT meals_idx UNIQUE (dateTime),*/
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX meals_dt_userid_idx ON meals (dateTime,user_id);
