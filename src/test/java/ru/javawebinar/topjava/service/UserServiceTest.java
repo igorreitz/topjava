@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -9,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.ParentTestClass;
+import ru.javawebinar.topjava.TimeForTestsLogging;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -17,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
@@ -25,7 +29,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class UserServiceTest {
+public class UserServiceTest extends ParentTestClass {
 
     static {
         // Only for postgres driver logging
@@ -36,6 +40,13 @@ public class UserServiceTest {
     @Autowired
     private UserService service;
 
+    @AfterClass
+    public static void printTimeInfo() {
+        System.out.println(UserServiceTest.class.getSimpleName());
+        System.out.println(TimeForTestsLogging.sb.toString());
+    }
+
+
     @Test
     public void create() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.ROLE_USER));
@@ -45,8 +56,10 @@ public class UserServiceTest {
         assertMatch(service.getAll(), ADMIN, newUser, USER);
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test
     public void duplicateMailCreate() throws Exception {
+        thrown.expect(DataAccessException.class);
+        thrown.expectMessage(startsWith("could not execute statement"));
         service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
     }
 
@@ -56,8 +69,10 @@ public class UserServiceTest {
         assertMatch(service.getAll(), ADMIN);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deletedNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage(startsWith("Not found entity with "));
         service.delete(1);
     }
 

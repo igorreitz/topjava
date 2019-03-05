@@ -11,9 +11,21 @@
         </encoder>
     </appender>
 
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${TOPJAVA_ROOT}/log/topjava.log</file>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date %-5level %logger{50}.%M:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <logger name="org.postgresql" level="debug"/>
     <logger name="org.springframework.jdbc" level="debug"/>
     <logger name="ru.javawebinar.topjava" level="debug"/>
+
+    <logger name="test_logger" level="debug"  additivity="false">
+        <appender-ref ref="file" />
+    </logger>
 
     <root level="INFO">
         <appender-ref ref="console"/>

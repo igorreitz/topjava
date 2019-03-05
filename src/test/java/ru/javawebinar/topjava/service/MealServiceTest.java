@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -8,12 +9,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.javawebinar.topjava.ParentTestClass;
+import ru.javawebinar.topjava.TimeForTestsLogging;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -23,7 +27,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class MealServiceTest {
+public class MealServiceTest extends ParentTestClass {
 
     static {
         SLF4JBridgeHandler.install();
@@ -32,14 +36,22 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
+    @AfterClass
+    public static void printTimeInfo() {
+        System.out.println(MealServiceTest.class.getSimpleName());
+        System.out.println(TimeForTestsLogging.sb.toString());
+    }
+
     @Test
     public void delete() throws Exception {
         service.delete(MEAL1_ID, USER_ID);
         assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void deleteNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage(startsWith("Not found entity with "));
         service.delete(MEAL1_ID, 1);
     }
 
@@ -59,8 +71,10 @@ public class MealServiceTest {
         assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void getNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage(startsWith("Not found entity with "));
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
@@ -72,9 +86,11 @@ public class MealServiceTest {
         assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotFound() throws Exception {
         MEAL1.setUser(USER);
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage(startsWith("Not found entity with "));
         service.update(MEAL1, ADMIN_ID);
     }
 
