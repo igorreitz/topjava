@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
