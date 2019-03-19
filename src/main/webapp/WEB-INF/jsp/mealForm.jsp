@@ -1,34 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
-<head>
-    <title>Meal</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<html>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
+    <c:choose>
+        <c:when test="${mealForm['new']}">
+            <h2><spring:message code="meal.add_form"/></h2>
+        </c:when>
+        <c:otherwise>
+            <h2><spring:message code="meal.edit_form"/></h2>
+        </c:otherwise>
+    </c:choose>
     <hr>
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="meals">
-        <input type="hidden" name="id" value="${meal.id}">
+    <spring:url value="save" var="userActionUrl"/>
+    <form:form method="post" modelAttribute="mealForm" action="${userActionUrl}">
+        <input type="hidden" name="id" value="${mealForm.id}">
         <dl>
-            <dt>DateTime:</dt>
-            <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>
+            <dt><spring:message code="meal.date_time"/>:</dt>
+            <spring:bind path="dateTime">
+                <dd>
+                    <form:input path="dateTime" type="dateTime-local"
+                                id="dateTime" placeholder="Date Time"/>
+                </dd>
+            </spring:bind>
         </dl>
         <dl>
-            <dt>Description:</dt>
-            <dd><input type="text" value="${meal.description}" size=40 name="description" required></dd>
+            <dt><spring:message code="meal.description"/>:</dt>
+            <dd><input type="text" value="${mealForm.description}" size=40 name="description" required></dd>
         </dl>
         <dl>
-            <dt>Calories:</dt>
-            <dd><input type="number" value="${meal.calories}" name="calories" required></dd>
+            <dt><spring:message code="meal.calories"/>:</dt>
+            <dd><input type="number" value="${mealForm.calories}" name="calories" required></dd>
         </dl>
-        <button type="submit">Save</button>
-        <button onclick="window.history.back()" type="button">Cancel</button>
-    </form>
+        <button type="submit"><spring:message code="meal.save"/></button>
+        <button onclick="window.history.back()" type="button"><spring:message code="meal.cancel"/></button>
+    </form:form>
 </section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

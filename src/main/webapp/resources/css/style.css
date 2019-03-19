@@ -23,6 +23,11 @@ tr[data-mealExcess="true"] {
     color: red;
 }
 
+.center {
+    margin: 0;
+    position: center;
+}
+
 header, footer {
     background: none repeat scroll 0 0 #A6C9E2;
     color: #2E6E9E;
