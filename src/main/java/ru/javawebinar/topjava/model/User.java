@@ -137,6 +137,10 @@ public class User extends AbstractNamedEntity {
         return meals;
     }
 
+    public void addRoles(Collection<Role> collection) {
+        this.roles.addAll(collection);
+    }
+
     @Override
     public String toString() {
         return "User{" +
