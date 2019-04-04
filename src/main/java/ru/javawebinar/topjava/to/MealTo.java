@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
 
 public class MealTo {
@@ -37,6 +39,7 @@ public class MealTo {
         return calories;
     }
 
+    @JsonIgnore
     public boolean isExcess() {
         return excess;
     }

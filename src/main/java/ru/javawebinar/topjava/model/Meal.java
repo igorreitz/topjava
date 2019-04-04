@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -50,6 +48,10 @@ public class Meal extends AbstractBaseEntity {
     private User user;
 
     public Meal() {
+    }
+
+    public Meal(Meal m) {
+        this(m.getId(),m.getDateTime(),m.getDescription(),m.getCalories());
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
