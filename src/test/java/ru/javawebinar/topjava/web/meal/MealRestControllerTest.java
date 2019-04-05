@@ -49,7 +49,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        assertMatch(mealService.get(MEAL1_ID,USER_ID), updated);
+        assertMatch(mealService.get(MEAL1_ID, USER_ID), updated);
     }
 
     @Test
@@ -63,7 +63,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testCreate() throws Exception{
+    void testCreate() throws Exception {
         Meal expected = new Meal(null, LocalDateTime.parse("2011-12-03T10:15:30"), "new meal", 570);
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,5 +85,21 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(MEAL6, MEAL3));
+    }
+
+    @Test
+    void testFilter() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter?startTime=17:00"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(MEAL6, MEAL3));
+    }
+
+    @Test
+    void testFilterWithNull() throws Exception {
+        mockMvc.perform(get(REST_URL + "filter"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1));
     }
 }
