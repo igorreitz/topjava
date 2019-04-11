@@ -36,7 +36,33 @@ $(function () {
                         "asc"
                     ]
                 ]
-            })
+            }),
+            updateTable: function () {
+                $.get("ajax/admin/users", updateTableByData);
+            }
         }
     );
 });
+
+function enableOrDisableUser(id) {
+    if ($("#checkbox").prop("checked")) {
+        $.ajax({
+            url: context.ajaxUrl + "enable/",
+            type: "POST",
+            data: "id=" + id
+        }).done(function () {
+            context.updateTable();
+            successNoty("Enabled");
+        })
+    } else {
+        $.ajax({
+            url: context.ajaxUrl + "disable/",
+            type: "POST",
+            data: "id=" + id
+        }).done(function () {
+            context.updateTable();
+            successNoty("Disabled");
+        })
+    }
+
+}

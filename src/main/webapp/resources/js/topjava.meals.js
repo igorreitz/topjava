@@ -1,14 +1,14 @@
-// $(document).ready(function () {
-
-let start_date, end_date, start_time, end_time;
+function updateFilteredTable() {
+    $.ajax({
+        type: "GET",
+        url: "ajax/profile/meals/filter",
+        data: $("#filter").serialize()
+    }).done(updateTableByData);
+}
 
 $(function () {
-    start_date = $('#startDate');
-    end_date = $('#endDate');
-    start_time = $('#startTime');
-    end_time = $('#endTime');
     makeEditable({
-            ajaxUrl: "ajax/meals/",
+            ajaxUrl: "ajax/profile/meals/",
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
@@ -37,8 +37,23 @@ $(function () {
                         "desc"
                     ]
                 ]
-            })
+            }),
+        updateTable: updateFilteredTable
         }
     );
 });
+
+function updateFilteredTable() {
+    $.ajax({
+        type: "GET",
+        url: "ajax/profile/meals/filter",
+        data: $("#filter").serialize()
+    }).done(updateTableByData);
+
+}
+
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get("ajax/profile/meals/", updateTableByData);
+}
 
